@@ -9,20 +9,23 @@
 #define QUADRANT_LB 3
 #define QUADRANT_RB 4
 
-struct Region {
+struct Region
+{
     double up;
     double bottom;
     double left;
     double right;
 };
 
-struct ElePoint {
-    double lng;
-    double lat;
+struct ElePoint
+{
+    double x;
+    double y;
     char desc[16];
 };
 
-struct QuadTreeNode {
+struct QuadTreeNode
+{
     int depth;
     int is_leaf;
     struct Region region;
@@ -31,12 +34,12 @@ struct QuadTreeNode {
     struct QuadTreeNode *RU;
     struct QuadTreeNode *RB;
     int ele_num;
-    struct ElePoint *ele_list[MAX_ELE_NUM];
+    struct ElePoint **ele_list;
 };
 
-void initNode(struct QuadTreeNode *node, int depth, struct Region region);
+void initNode(struct QuadTreeNode *node, int depth, struct Region *region);
 
-void insertEle(struct QuadTreeNode *node, struct ElePoint ele);
+void insertEle(struct QuadTreeNode *node, struct ElePoint *ele);
 
 void deleteEle(struct QuadTreeNode *node, struct ElePoint ele);
 
@@ -44,7 +47,7 @@ void splitNode(struct QuadTreeNode *node);
 
 void combineNode(struct QuadTreeNode *node);
 
-void queryEle(struct QuadTreeNode tree, struct ElePoint ele);
+void queryEle(struct QuadTreeNode *tree, struct ElePoint *ele);
 
 void initRegion(struct Region *region, double up, double bottom, double left, double right);
 
