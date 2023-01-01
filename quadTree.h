@@ -21,7 +21,7 @@ struct ElePoint
 {
     double x;
     double y;
-    char desc[16];
+    int id;
 };
 
 struct QuadTreeNode
@@ -41,7 +41,7 @@ void initNode(struct QuadTreeNode *node, int depth, struct Region *region);
 
 void insertEle(struct QuadTreeNode *node, struct ElePoint *ele);
 
-void deleteEle(struct QuadTreeNode *node, struct ElePoint ele);
+void deleteEle(struct QuadTreeNode *node, struct ElePoint *ele);
 
 void splitNode(struct QuadTreeNode *node);
 

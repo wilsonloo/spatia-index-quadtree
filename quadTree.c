@@ -107,12 +107,56 @@ struct QuadTreeNode *createChildNode(struct QuadTreeNode *node, double bottom, d
     return childNode;
 }
 
-void deleteEle(struct QuadTreeNode *node, struct ElePoint ele)
+void deleteEle(struct QuadTreeNode *node, struct ElePoint *ele)
 {
-    /**
-     * 1.遍历元素列表，删除对应元素
-     * 2.检查兄弟象限元素总数，不超过最大量时组合兄弟象限
-     */
+    if (node == NULL)
+    {
+        printf("无法找到\n");
+        return;
+    }
+
+    if (node->is_leaf == 1)
+    {
+        for (int j = 0; j < node->ele_num; ++j)
+        {
+            if (node->ele_list[j]->id == ele->id)
+            {
+                printf("已移除id:%d (%f,%f)\n", ele->id, ele->x, ele->y);
+                for (int k = j; k < node->ele_num - 1; ++k)
+                {
+                    node->ele_list[k] = node->ele_list[k + 1];
+                }
+                node->ele_num -= 1;
+                break;
+            }
+        }
+        return;
+    }
+
+    double mid_vertical = (node->region.up + node->region.bottom) / 2;
+    double mid_horizontal = (node->region.left + node->region.right) / 2;
+    if (ele->y > mid_vertical)
+    {
+        if (ele->x > mid_horizontal)
+        {
+            deleteEle(node->RU, ele);
+        }
+        else
+        {
+            deleteEle(node->LU, ele);
+        }
+    }
+    else
+    {
+        if (ele->x > mid_horizontal)
+        {
+            deleteEle(node->RB, ele);
+        }
+        else
+        {
+            deleteEle(node->LB, ele);
+        }
+    }
 }
 
 void combineNode(struct QuadTreeNode *node)
